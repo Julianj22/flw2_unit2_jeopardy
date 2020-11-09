@@ -33,15 +33,13 @@ let categories = [
  *      Answer: https://bit.ly/3gOwrga
  */
 function renderCategories() {
-  categories.forEach(function (category) {
-    $("#categories").html(
-      "<div class='category'><div class='category-cell'>" +
-        category.toUpperCase() +
-        "</div></div>"
+  for (let i = 0; i < categories.length; i++) {
+    $("#categories").append(
+      `<div class='category'><div class='category-cell'>${categories[i]}</div></div>`
     );
-  });
+  }
 
   // Add code here
 }
 
-renderCategories();
+// renderCategories();
