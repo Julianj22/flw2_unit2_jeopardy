@@ -39,7 +39,7 @@ function renderQuestions() {
     for (let c = 0; c < numCategories; c++) {
       $("#questions").append(
         "<div class='questions-column'><div class='question-cell' data-category='" +
-          i +
+          c +
           "'>" +
           questionValues[i] +
           "</div></div>"
