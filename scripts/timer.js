@@ -20,20 +20,60 @@
  * THIS ONE IS HARD! DON'T WORRY IF YOU NEED TO ASK FOR HELP!
  */
 
-$(".question-cell").click(function () {
-  // function endTimer() {
-  //   $("question-modal-show-answer").click(function () {
-  //     return true;
-  //   });
-  // }
+// Add code here.
+$("#questions").click(function () {
+  startCountdownTimer(10, shouldCancel(), timeoutCallback());
+});
 
-  function timeUp() {
-    setTimeout(function () {
-      alert("hi");
-    }, 1);
+function shouldCancel() {
+  $("#question-modal-show-answer").click(function () {
+    console.log("w");
+    return true;
+  });
+}
+
+function timeoutCallback() {
+  disableCorrectButton();
+  showAnswerChoices();
+}
+
+function disableCorrectButton() {
+  // Only allow the user to press the "wrong" button.
+  $("#correct-button").prop("disabled", true);
+}
+
+function showAnswerChoices() {
+  // Invoke the previously wired up click handlers directly.
+  $("#question-modal-show-answer").show();
+}
+
+/* Begins a chain of 1 second timeouts based on the given seconds-remaining
+ * parameter.
+ *
+ * On every second, the should-cancel parameter is called (as a function with
+ * zero parameter) and will cancel the timer if it returns true.
+ *
+ * If the countdown timer hits zero ("time's up!"), the given timeout-callback
+ * parameter is called.
+ */
+function startCountdownTimer(secondsRemaining, shouldCancel, timeoutCallback) {
+  if (!shouldCancel || !timeoutCallback) {
+    console.error("Missing callbacks to start countdown timer function");
+    return;
   }
 
-  timeUp();
+  if (shouldCancel()) {
+    console.log("Timeout canceled with seconds remaining:", secondsRemaining);
+    return;
+  }
 
-  //   function startCountdownTimer(timeLength, endTimer, timeUp);
-});
+  $("#question-modal-timer").html(secondsRemaining);
+
+  if (secondsRemaining > 0) {
+    setTimeout(() => {
+      startCountdownTimer(secondsRemaining - 1, shouldCancel, timeoutCallback);
+    }, 1000);
+  } else {
+    timeoutCallback();
+  }
+}
